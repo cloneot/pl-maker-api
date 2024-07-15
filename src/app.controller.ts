@@ -12,6 +12,6 @@ export class AppController {
 
   @Get('test/:id')
   getTest(@Param('id') id: string): string {
-    return `Hello ${id}`;
+    return `Hello ${id} zz`;
   }
 }
