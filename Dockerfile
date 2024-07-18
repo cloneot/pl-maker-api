@@ -18,5 +18,4 @@ FROM node:18 AS runner
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-EXPOSE 3000
 CMD ["node", "dist/main"]
