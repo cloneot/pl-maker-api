@@ -12,6 +12,8 @@ services:
       NODE_ENV: production
     depends_on:
       - db
+    networks:
+      - pl-maker-network
 
   db:
     image: mysql:8
@@ -21,9 +23,15 @@ services:
     #   - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: testdb
+      MYSQL_DATABASE: pl_maker
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - pl-maker-network
+
+networks:
+  pl-maker-network:
+    driver: bridge
 
 volumes:
   mysql-data:

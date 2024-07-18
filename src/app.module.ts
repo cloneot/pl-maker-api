@@ -18,7 +18,9 @@ import configuration from './config/configuration';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const app_host = configService.get<string>('app.host');
+        const db_name = configService.get<string>('db.database');
         console.log(`app host: ${app_host}`);
+        console.log(`db name: ${db_name}`);
         return {
           type: 'mysql',
           host: configService.get<string>('db.host'),

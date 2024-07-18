@@ -12,6 +12,8 @@ services:
       NODE_ENV: development
     depends_on:
       - db
+    networks:
+      - pl-maker-network
 
   db:
     image: mysql:8
@@ -24,6 +26,12 @@ services:
       MYSQL_DATABASE: testdb
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - pl-maker-network
+
+networks:
+  pl-maker-network:
+    driver: bridge
 
 volumes:
   mysql-data:
