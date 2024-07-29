@@ -1,23 +1,23 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
-import { UserService } from './user.service';
-import { User } from './user.entity';
+import { UserService as UsersService } from './users.service';
+import { Users } from './users.entity';
 
 @Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly userService: UsersService) {}
 
   @Get()
-  findAll(): Promise<User[]> {
+  findAll(): Promise<Users[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<User> {
+  findOne(@Param('id') id: number): Promise<Users> {
     return this.userService.findOne(+id); // Ensure id is a number
   }
 
   @Post()
-  create(@Body() user: User): Promise<User> {
+  create(@Body() user: Users): Promise<Users> {
     return this.userService.create(user);
   }
 
