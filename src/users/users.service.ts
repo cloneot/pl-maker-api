@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Users as Users } from './users.entity';
+import { UserEntity as UserEntity } from './users.entity';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(
-    @InjectRepository(Users)
-    private readonly userRepository: Repository<Users>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  findAll(): Promise<Users[]> {
-    return this.userRepository.find();
+  findOne(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne({ where: { userId: id } });
   }
 
-  findOne(id: number): Promise<Users> {
-    return this.userRepository.findOne({ where: { id } });
+  findOneBySub(googleSub: string): Promise<UserEntity | null> {
+    return this.userRepository.findOne({ where: { googleSub: googleSub } });
   }
 
-  create(user: Users): Promise<Users> {
-    console.log(user);
-    return this.userRepository.save(user);
+  async findOrCreate(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const user = await this.findOneBySub(createUserDto.googleSub);
+    if (!user) {
+      return this.create(createUserDto);
+    }
+
+    const isTokenUpdated =
+      user.accessToken !== createUserDto.accessToken ||
+      (createUserDto.refreshToken &&
+        user.refreshToken !== createUserDto.refreshToken);
+    if (isTokenUpdated) {
+      user.accessToken = createUserDto.accessToken;
+      user.refreshToken = createUserDto.refreshToken || user.refreshToken;
+      return this.userRepository.save(user);
+    }
+    return user;
+  }
+
+  create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    // console.log(createUserDto);
+    return this.userRepository.save({
+      username: createUserDto.username,
+      googleSub: createUserDto.googleSub,
+      accessToken: createUserDto.accessToken,
+      refreshToken: createUserDto.refreshToken,
+    });
   }
 
   async remove(id: number): Promise<void> {

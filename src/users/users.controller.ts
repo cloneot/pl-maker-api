@@ -1,28 +1,45 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
-import { UserService as UsersService } from './users.service';
-import { Users } from './users.entity';
+import {
+  Controller,
+  Get,
+  Param,
+  Delete,
+  UseGuards,
+  NotImplementedException,
+} from '@nestjs/common';
+import { UsersService as UsersService } from './users.service';
+import { UserEntity } from './users.entity';
+import { LoggedInGuard } from 'src/auth/logged-in.guard';
+import { User } from 'src/auth/user.decorator';
+import { DefaultUserInfoDto } from './dto/default-info-user.dto';
+import { instanceToPlain, plainToClass } from 'class-transformer';
+
+function userEntityToDefaultUserInfo(user: UserEntity): DefaultUserInfoDto {
+  // console.log('User Entity: ', user);
+  return plainToClass(DefaultUserInfoDto, instanceToPlain(user), {
+    excludeExtraneousValues: true,
+  });
+}
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  findAll(): Promise<Users[]> {
-    return this.userService.findAll();
+  @UseGuards(LoggedInGuard)
+  @Get('me')
+  findMe(@User() user: UserEntity) {
+    return userEntityToDefaultUserInfo(user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Users> {
-    return this.userService.findOne(+id); // Ensure id is a number
-  }
-
-  @Post()
-  create(@Body() user: Users): Promise<Users> {
-    return this.userService.create(user);
+  async findOne(@Param('id') id: number) {
+    const user = await this.usersService.findOne(+id);
+    return userEntityToDefaultUserInfo(user);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number): Promise<void> {
-    return this.userService.remove(+id); // Ensure id is a number
+    // TODO: revoke token
+    throw new NotImplementedException();
+    return this.usersService.remove(+id); // Ensure id is a number
   }
 }
