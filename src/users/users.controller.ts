@@ -9,9 +9,9 @@ import {
 import { UsersService as UsersService } from './users.service';
 import { UserEntity } from './users.entity';
 import { LoggedInGuard } from 'src/auth/logged-in.guard';
-import { User } from 'src/auth/user.decorator';
 import { DefaultUserInfoDto } from './dto/default-info-user.dto';
 import { instanceToPlain, plainToClass } from 'class-transformer';
+import { User } from 'src/decorator/user.decorator';
 
 function userEntityToDefaultUserInfo(user: UserEntity): DefaultUserInfoDto {
   // console.log('User Entity: ', user);
