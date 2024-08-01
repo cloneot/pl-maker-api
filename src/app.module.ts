@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { MusicModule } from './music/music.module';
 import { YoutubeModule } from './youtube/youtube.module';
+import { PlaylistsModule } from './playlists/playlists.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -42,6 +43,7 @@ import configuration from './config/configuration';
     AuthModule,
     MusicModule,
     YoutubeModule,
+    PlaylistsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

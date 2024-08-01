@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as session from 'express-session';
@@ -8,7 +8,7 @@ import * as cookieParser from 'cookie-parser';
 import { promisify } from 'util';
 import * as passportHttpRequest from 'passport/lib/http/request.js';
 import { NextFunction } from 'express';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 // promisify passport logIn logOut function
 function promisifyPassport(req: any, res: Response, next: NextFunction) {
@@ -27,6 +27,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get('app.port');
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.useGlobalPipes(
     new ValidationPipe({

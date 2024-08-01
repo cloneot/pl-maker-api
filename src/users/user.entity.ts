@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { PlaylistEntity } from 'src/playlists/playlist.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -15,14 +16,15 @@ export class UserEntity {
   @Column({ name: 'google_sub', type: 'varchar', length: 256, unique: true })
   googleSub: string;
 
-  @Expose()
+  @Exclude()
   @Column({ name: 'access_token', type: 'varchar', length: 2048 })
   accessToken: string;
 
-  @Expose()
+  @Exclude()
   @Column({ name: 'refresh_token', type: 'varchar', length: 512 })
   refreshToken: string;
 
-  // @OneToMany(() => PlaylistEntity, (playlistEntity) => playlistEntity.user)
-  // playlists: PlaylistEntity[];
+  @Exclude()
+  @OneToMany(() => PlaylistEntity, (playlistEntity) => playlistEntity.user)
+  playlists: PlaylistEntity[];
 }
