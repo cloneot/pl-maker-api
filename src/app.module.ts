@@ -9,6 +9,7 @@ import { MusicModule } from './music/music.module';
 import { YoutubeModule } from './youtube/youtube.module';
 import { PlaylistsModule } from './playlists/playlists.module';
 import configuration from './config/configuration';
+import { PlaylistitemsModule } from './playlistitems/playlistitems.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import configuration from './config/configuration';
     MusicModule,
     YoutubeModule,
     PlaylistsModule,
+    PlaylistitemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

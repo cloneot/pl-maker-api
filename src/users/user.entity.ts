@@ -13,7 +13,7 @@ export class UserEntity {
   username: string;
 
   @Expose()
-  @Column({ name: 'google_sub', type: 'varchar', length: 256, unique: true })
+  @Column({ name: 'google_sub', type: 'varchar', length: 255, unique: true })
   googleSub: string;
 
   @Exclude()

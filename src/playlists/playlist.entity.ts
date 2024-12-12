@@ -1,10 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
+import { PlaylistitemEntity } from 'src/playlistitems/playlistitem.entity';
 import { UserEntity } from 'src/users/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,13 +20,13 @@ export class PlaylistEntity {
   @Column({
     name: 'yt_playlist_id',
     type: 'varchar',
-    length: 256,
+    length: 255,
     unique: true,
   })
   ytPlaylistId: string;
 
   @Expose()
-  @Column({ name: 'title', type: 'varchar', length: 256 })
+  @Column({ name: 'title', type: 'varchar', length: 255 })
   title: string;
 
   @Expose()
@@ -38,4 +40,8 @@ export class PlaylistEntity {
   })
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
+
+  @Exclude()
+  @OneToMany(() => PlaylistitemEntity, (playlistitem) => playlistitem.playlist)
+  playlistitems: PlaylistitemEntity[];
 }

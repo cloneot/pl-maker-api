@@ -1,5 +1,11 @@
-import { Expose } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude, Expose } from 'class-transformer';
+import { PlaylistitemEntity } from 'src/playlistitems/playlistitem.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class MusicEntity {
@@ -8,7 +14,7 @@ export class MusicEntity {
   musicId: number;
 
   @Expose()
-  @Column({ name: 'yt_video_id', type: 'varchar', length: 64, unique: true })
+  @Column({ name: 'yt_video_id', type: 'varchar', length: 255, unique: true })
   ytVideoId: string;
 
   // TODO: move to official_tag relation (for youtube api test)
@@ -19,4 +25,8 @@ export class MusicEntity {
   @Expose()
   @Column({ name: 'thumbnail_path', type: 'varchar', length: 255 })
   thumbnailPath: string;
+
+  @Exclude()
+  @OneToMany(() => PlaylistitemEntity, (playlistitem) => playlistitem.music)
+  playlistitems: PlaylistitemEntity[];
 }

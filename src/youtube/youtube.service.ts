@@ -3,6 +3,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { youtube, youtube_v3 } from '@googleapis/youtube';
 import { CreatePlaylistDto } from 'src/playlists/dto/create-playlist.dto';
 import { UpdatePlaylistDto } from 'src/playlists/dto/update-playlist.dto';
+import { YtInsertPlaylistitemDto } from 'src/playlistitems/dto/yt-insert-playlistitem.dto';
 
 @Injectable()
 export class YoutubeService {
@@ -53,8 +54,6 @@ export class YoutubeService {
     updatePlaylistDto: UpdatePlaylistDto,
     ytPlaylistId: string,
   ): Promise<youtube_v3.Schema$Playlist> {
-    console.log('youtube service: updatePlaylist: ', { ...updatePlaylistDto });
-    console.log(ytPlaylistId);
     const res = await this.service.playlists.update({
       auth: oauth2Client,
       part: ['snippet'],
@@ -89,7 +88,36 @@ export class YoutubeService {
       id: [ytVideoId],
       fields: 'items(id, snippet(title, thumbnails(default(url))))',
     });
-    console.log(res.data.items[0]);
     return res.data.items[0];
+  }
+
+  async insertPlaylistItem(
+    oauth2Client: OAuth2Client,
+    ytInsertPlaylistItemDto: YtInsertPlaylistitemDto,
+  ): Promise<youtube_v3.Schema$PlaylistItem> {
+    const res = await this.service.playlistItems.insert({
+      auth: oauth2Client,
+      part: ['snippet'],
+      requestBody: {
+        snippet: {
+          playlistId: ytInsertPlaylistItemDto.ytPlaylistId,
+          resourceId: {
+            kind: 'youtube#video',
+            videoId: ytInsertPlaylistItemDto.ytMusicId,
+          },
+        },
+      },
+    });
+    return res.data;
+  }
+
+  async deletePlaylistItem(
+    oauth2Client: OAuth2Client,
+    ytPlaylistitemId: string,
+  ): Promise<void> {
+    await this.service.playlistItems.delete({
+      auth: oauth2Client,
+      id: ytPlaylistitemId,
+    });
   }
 }
