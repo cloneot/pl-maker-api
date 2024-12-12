@@ -9,6 +9,7 @@ import { promisify } from 'util';
 import * as passportHttpRequest from 'passport/lib/http/request.js';
 import { NextFunction } from 'express';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import * as fs from 'node:fs';
 
 // promisify passport logIn logOut function
 function promisifyPassport(req: any, res: Response, next: NextFunction) {
@@ -19,7 +20,13 @@ function promisifyPassport(req: any, res: Response, next: NextFunction) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/cloneot.dev/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/cloneot.dev/fullchain.pem'),
+  };
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions,
+  });
   app.enableCors({
     origin: ['http://localhost:3000', 'https://pl-maker.netlify.app'],
     credentials: true,
@@ -49,9 +56,9 @@ async function bootstrap() {
       name: 'connect.sid',
       cookie: {
         httpOnly: true,
-        // secure: false, // TODO: true in production
+        secure: true,
+        sameSite: 'none',
         maxAge: 1000 * 60 * 30,
-        // sameSite: ''
       },
       store: new FileStore({
         path: './sessions',
