@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { PlaylistitemsService } from './playlistitems.service';
 import { InsertPlaylistitemDto } from './dto/insert-playlistitem.dto';
-import { LoggedInGuard } from 'src/auth/logged-in.guard';
-import { YoutubeGuard } from 'src/youtube/youtube.guard';
-import { User } from 'src/common/decorator/user.decorator';
-import { Youtube } from 'src/common/decorator/youtube.decorator';
+import { LoggedInGuard } from '@src/auth/logged-in.guard';
+import { YoutubeGuard } from '@common/youtube/youtube.guard';
+import { User } from '@common/decorator/user.decorator';
+import { Youtube } from '@common/decorator/youtube.decorator';
 
 @Controller('playlistitems')
 export class PlaylistitemsController {

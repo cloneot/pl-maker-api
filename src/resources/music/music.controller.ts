@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
-import { Public } from 'src/common/decorator/public.decorator';
-import { YoutubeGuard } from 'src/youtube/youtube.guard';
-import { Youtube } from 'src/common/decorator/youtube.decorator';
+import { Public } from '@common/decorator/public.decorator';
+import { YoutubeGuard } from '@common/youtube/youtube.guard';
+import { Youtube } from '@common/decorator/youtube.decorator';
 
 @Controller('music')
 export class MusicController {

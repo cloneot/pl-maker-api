@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import { MusicEntity } from 'src/music/music.entity';
-import { PlaylistEntity } from 'src/playlists/playlist.entity';
+import { MusicEntity } from '@resources/music/music.entity';
+import { PlaylistEntity } from '@resources/playlists/playlist.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

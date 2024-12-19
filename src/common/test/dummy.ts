@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { MusicEntity } from 'src/music/music.entity';
+import { MusicEntity } from '@resources/music/music.entity';
 
 export const music1: MusicEntity = {
   musicId: 1,

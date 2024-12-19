@@ -3,12 +3,12 @@ import { Repository } from 'typeorm';
 import { MusicEntity } from './music.entity';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { YoutubeService } from 'src/youtube/youtube.service';
+import { YoutubeService } from '@common/youtube/youtube.service';
 import { OAuth2Client } from 'google-auth-library';
 import {
   ResourceAlreadyExistsException,
   ResourceNotFoundException,
-} from 'src/common/exception/service.exception';
+} from '@common/exception/service.exception';
 
 @Injectable()
 export class MusicService {

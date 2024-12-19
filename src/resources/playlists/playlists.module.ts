@@ -3,7 +3,7 @@ import { PlaylistsService } from './playlists.service';
 import { PlaylistsController } from './playlists.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlaylistEntity } from './playlist.entity';
-import { YoutubeModule } from 'src/youtube/youtube.module';
+import { YoutubeModule } from '@common/youtube/youtube.module';
 
 @Module({
   imports: [YoutubeModule, TypeOrmModule.forFeature([PlaylistEntity])],

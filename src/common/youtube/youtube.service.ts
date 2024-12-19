@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
 import { youtube, youtube_v3 } from '@googleapis/youtube';
-import { CreatePlaylistDto } from 'src/playlists/dto/create-playlist.dto';
-import { UpdatePlaylistDto } from 'src/playlists/dto/update-playlist.dto';
-import { YtInsertPlaylistitemDto } from 'src/playlistitems/dto/yt-insert-playlistitem.dto';
+import { CreatePlaylistDto } from '@resources/playlists/dto/create-playlist.dto';
+import { UpdatePlaylistDto } from '@resources/playlists/dto/update-playlist.dto';
+import { YtInsertPlaylistitemDto } from '@resources/playlistitems/dto/yt-insert-playlistitem.dto';
 
 @Injectable()
 export class YoutubeService {

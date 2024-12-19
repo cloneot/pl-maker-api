@@ -6,11 +6,11 @@ import { Repository } from 'typeorm';
 import {
   ResourceAlreadyExistsException,
   ResourceNotFoundException,
-} from '../common/exception/service.exception';
-import { TypeOrmTestingModule } from 'src/common/test/typeorm-testing.module';
-import { YoutubeService } from 'src/youtube/youtube.service';
+} from '@common/exception/service.exception';
+import { TypeOrmTestingModule } from '@common/test/typeorm-testing.module';
+import { YoutubeService } from '@common/youtube/youtube.service';
 import { auth } from '@googleapis/youtube';
-import { YoutubeModule } from 'src/youtube/youtube.module';
+import { YoutubeModule } from '@common/youtube/youtube.module';
 import {
   exposedMusic1,
   exposedMusic2,
@@ -18,7 +18,7 @@ import {
   music1,
   music2,
   music3,
-} from 'src/common/test/dummy';
+} from '@common/test/dummy';
 import { CreateMusicDto } from './dto/create-music.dto';
 
 describe('MusicService', () => {

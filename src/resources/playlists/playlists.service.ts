@@ -4,13 +4,13 @@ import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlaylistEntity } from './playlist.entity';
 import { Repository } from 'typeorm';
-import { YoutubeService } from 'src/youtube/youtube.service';
-import { UserEntity } from 'src/users/user.entity';
+import { YoutubeService } from '@common/youtube/youtube.service';
+import { UserEntity } from '@resources/users/user.entity';
 import { OAuth2Client } from 'google-auth-library';
 import {
   ForbiddenResourceAccessException,
   ResourceNotFoundException,
-} from 'src/common/exception/service.exception';
+} from '@common/exception/service.exception';
 
 @Injectable()
 export class PlaylistsService {

@@ -3,7 +3,7 @@ import { MusicController } from './music.controller';
 import { MusicService } from './music.service';
 import { MusicEntity } from './music.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { YoutubeModule } from 'src/youtube/youtube.module';
+import { YoutubeModule } from '@common/youtube/youtube.module';
 
 @Module({
   imports: [YoutubeModule, TypeOrmModule.forFeature([MusicEntity])],

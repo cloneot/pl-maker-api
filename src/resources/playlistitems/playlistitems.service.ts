@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PlaylistEntity } from 'src/playlists/playlist.entity';
+import { PlaylistEntity } from '@resources/playlists/playlist.entity';
 import { Repository } from 'typeorm';
-import { YoutubeService } from 'src/youtube/youtube.service';
+import { YoutubeService } from '@common/youtube/youtube.service';
 import { OAuth2Client } from 'google-auth-library';
 import { InsertPlaylistitemDto } from './dto/insert-playlistitem.dto';
-import { MusicEntity } from 'src/music/music.entity';
+import { MusicEntity } from '@resources/music/music.entity';
 import { YtInsertPlaylistitemDto } from './dto/yt-insert-playlistitem.dto';
 import { PlaylistitemEntity } from './playlistitem.entity';
 

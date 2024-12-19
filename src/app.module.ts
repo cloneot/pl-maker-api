@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { MusicModule } from './music/music.module';
-import { YoutubeModule } from './youtube/youtube.module';
-import { PlaylistsModule } from './playlists/playlists.module';
 import configuration from './common/config/configuration';
-import { PlaylistitemsModule } from './playlistitems/playlistitems.module';
+import { MusicModule } from '@resources/music/music.module';
+import { PlaylistitemsModule } from '@resources/playlistitems/playlistitems.module';
+import { PlaylistsModule } from '@resources/playlists/playlists.module';
+import { UsersModule } from '@resources/users/users.module';
+import { YoutubeModule } from '@common/youtube/youtube.module';
 
 @Module({
   imports: [

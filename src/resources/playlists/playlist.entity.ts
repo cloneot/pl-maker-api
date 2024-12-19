@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import { PlaylistitemEntity } from 'src/playlistitems/playlistitem.entity';
-import { UserEntity } from 'src/users/user.entity';
+import { PlaylistitemEntity } from '@resources/playlistitems/playlistitem.entity';
+import { UserEntity } from '@resources/users/user.entity';
 import {
   Column,
   Entity,

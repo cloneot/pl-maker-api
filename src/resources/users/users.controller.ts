@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { UsersService as UsersService } from './users.service';
 import { UserEntity } from './user.entity';
-import { LoggedInGuard } from 'src/auth/logged-in.guard';
-import { User } from 'src/common/decorator/user.decorator';
+import { LoggedInGuard } from '@src/auth/logged-in.guard';
+import { User } from '@common/decorator/user.decorator';
 
 @Controller('users')
 export class UsersController {

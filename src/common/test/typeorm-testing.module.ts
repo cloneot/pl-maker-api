@@ -1,8 +1,8 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MusicEntity } from 'src/music/music.entity';
-import { PlaylistitemEntity } from 'src/playlistitems/playlistitem.entity';
-import { PlaylistEntity } from 'src/playlists/playlist.entity';
-import { UserEntity } from 'src/users/user.entity';
+import { MusicEntity } from '@resources/music/music.entity';
+import { PlaylistitemEntity } from '@resources/playlistitems/playlistitem.entity';
+import { PlaylistEntity } from '@resources/playlists/playlist.entity';
+import { UserEntity } from '@resources/users/user.entity';
 
 export const TypeOrmTestingModule = (entities: any[]) => [
   TypeOrmModule.forRoot({

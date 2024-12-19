@@ -5,19 +5,19 @@ import { MusicEntity } from './music.entity';
 import {
   ResourceAlreadyExistsException,
   ResourceNotFoundException,
-} from '../common/exception/service.exception';
+} from '@common/exception/service.exception';
 import { plainToInstance } from 'class-transformer';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { auth } from '@googleapis/youtube';
-import { Youtube } from 'src/common/decorator/youtube.decorator';
+import { Youtube } from '@common/decorator/youtube.decorator';
 import {
   exposedMusic1,
   exposedMusic2,
   music1,
   music2,
-} from 'src/common/test/dummy';
-import { YoutubeModule } from 'src/youtube/youtube.module';
-import { TypeOrmTestingModule } from 'src/common/test/typeorm-testing.module';
+} from '@common/test/dummy';
+import { YoutubeModule } from '@common/youtube/youtube.module';
+import { TypeOrmTestingModule } from '@common/test/typeorm-testing.module';
 import { ConfigModule } from '@nestjs/config';
 
 const mockMusicService = {
