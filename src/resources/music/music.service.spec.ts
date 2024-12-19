@@ -63,7 +63,7 @@ describe('MusicService', () => {
       );
     });
 
-    it('should throw EntityNotFoundException when it does not exist', async () => {
+    it('should throw ResourceNotFoundException when it does not exist', async () => {
       expect(musicService.findMusicById(-1)).rejects.toThrow(
         ResourceNotFoundException,
       );
@@ -108,7 +108,7 @@ describe('MusicService', () => {
       );
     });
 
-    it('should throw EntityAlreadyExistsException when it already exists', async () => {
+    it('should throw ResourceAlreadyExistsException when it already exists', async () => {
       const ytListMusicApi = jest.spyOn(youtubeService, 'listMusic');
       expect(musicService.createMusic(client, dto1)).rejects.toThrow(
         ResourceAlreadyExistsException,

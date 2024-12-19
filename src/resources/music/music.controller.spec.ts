@@ -87,7 +87,7 @@ describe('MusicController', () => {
     });
 
     // http 404 error will be thrown by global filter
-    it('should throw EntityNotFoundException when it does not exist', () => {
+    it('should throw ExceptionNotFoundException when it does not exist', () => {
       expect(musicController.findMusicById(3)).rejects.toThrow(
         ResourceNotFoundException,
       );
@@ -113,7 +113,7 @@ describe('MusicController', () => {
     });
 
     // http 409 error will be thrown by global filter
-    it('should throw EntityAlreadyExistsException when it already exists', async () => {
+    it('should throw ResourceAlreadyExistsException when it already exists', async () => {
       await expect(
         musicController.createMusic({ ytVideoId: music1.ytVideoId }, yt),
       ).rejects.toThrow(ResourceAlreadyExistsException);
