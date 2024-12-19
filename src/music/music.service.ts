@@ -5,6 +5,10 @@ import { CreateMusicDto } from './dto/create-music.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { YoutubeService } from 'src/youtube/youtube.service';
 import { OAuth2Client } from 'google-auth-library';
+import {
+  EntityAlreadyExistsException,
+  EntityNotFoundException,
+} from 'src/common/exception/service.exception';
 
 @Injectable()
 export class MusicService {
@@ -14,32 +18,35 @@ export class MusicService {
     private readonly youtubeService: YoutubeService,
   ) {}
 
-  findOne(musicId: number) {
-    return this.musicRepository.findOne({ where: { musicId } });
+  async findMusicById(musicId: number) {
+    const music = await this.musicRepository.findOne({ where: { musicId } });
+    if (!music) {
+      throw new EntityNotFoundException(`Music Not Found`);
+    }
+    return music;
   }
 
-  findOneByYtVideoId(ytVideoId: string) {
-    return this.musicRepository.findOne({ where: { ytVideoId } });
-  }
-
-  findAll() {
+  findAllMusic() {
     return this.musicRepository.find();
   }
 
-  async create(oauth2Client: OAuth2Client, createMusicDto: CreateMusicDto) {
+  async createMusic(
+    oauth2Client: OAuth2Client,
+    createMusicDto: CreateMusicDto,
+  ) {
     const { ytVideoId } = createMusicDto;
-    // TODO: check already exists
+    const music = await this.musicRepository.findOne({
+      where: { ytVideoId },
+    });
+    if (music) {
+      throw new EntityAlreadyExistsException(`Music Already Exists`);
+    }
 
     const item = await this.youtubeService.listMusic(oauth2Client, ytVideoId);
-
     return this.musicRepository.save({
       ytVideoId,
       title: item.snippet.title,
       thumbnailPath: item.snippet.thumbnails.default.url,
     });
-  }
-
-  findByYtVideoId(ytVideoId: string) {
-    return this.musicRepository.findOne({ where: { ytVideoId } });
   }
 }

@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { IS_PUBLIC_KEY } from 'src/decorator/public.decorator';
+import { IS_PUBLIC_KEY } from 'src/common/decorator/public.decorator';
 import { Credentials } from 'google-auth-library';
 
 @Injectable()

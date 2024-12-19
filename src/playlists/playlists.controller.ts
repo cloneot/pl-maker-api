@@ -12,10 +12,10 @@ import {
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import { User } from 'src/decorator/user.decorator';
+import { User } from 'src/common/decorator/user.decorator';
 import { LoggedInGuard } from 'src/auth/logged-in.guard';
 import { UserEntity } from 'src/users/user.entity';
-import { Youtube } from 'src/decorator/youtube.decorator';
+import { Youtube } from 'src/common/decorator/youtube.decorator';
 import { YoutubeGuard } from 'src/youtube/youtube.guard';
 
 @Controller('playlists')

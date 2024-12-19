@@ -10,23 +10,31 @@ import * as passportHttpRequest from 'passport/lib/http/request.js';
 import { NextFunction } from 'express';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import * as fs from 'node:fs';
+import { ServiceExceptionToHttpExceptionFilter } from './common/exception/service-exception.to.http-exception.filter';
 
 // promisify passport logIn logOut function
 function promisifyPassport(req: any, res: Response, next: NextFunction) {
-  // console.log(passportHttpRequest.logIn);
   req.logIn = promisify(passportHttpRequest.logIn);
   req.logOut = promisify(passportHttpRequest.logOut);
   next();
 }
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/cloneot.dev/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/cloneot.dev/fullchain.pem'),
-  };
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
-  });
+  const app = await NestFactory.create(
+    AppModule,
+    process.env.NODE_ENV === 'production'
+      ? {
+          httpsOptions: {
+            key: fs.readFileSync(
+              '/etc/letsencrypt/live/cloneot.dev/privkey.pem',
+            ),
+            cert: fs.readFileSync(
+              '/etc/letsencrypt/live/cloneot.dev/fullchain.pem',
+            ),
+          },
+        }
+      : {},
+  );
   app.enableCors({
     origin: ['http://localhost:3000', 'https://pl-maker.netlify.app'],
     credentials: true,
@@ -36,7 +44,6 @@ async function bootstrap() {
   const port = configService.get('app.port');
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -45,6 +52,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.useGlobalFilters(new ServiceExceptionToHttpExceptionFilter());
 
   app.use(cookieParser());
   const FileStore = fileStore(session);

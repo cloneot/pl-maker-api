@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { MusicModule } from './music/music.module';
 import { YoutubeModule } from './youtube/youtube.module';
 import { PlaylistsModule } from './playlists/playlists.module';
-import configuration from './config/configuration';
+import configuration from './common/config/configuration';
 import { PlaylistitemsModule } from './playlistitems/playlistitems.module';
 
 @Module({

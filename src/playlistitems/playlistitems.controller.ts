@@ -12,8 +12,8 @@ import { PlaylistitemsService } from './playlistitems.service';
 import { InsertPlaylistitemDto } from './dto/insert-playlistitem.dto';
 import { LoggedInGuard } from 'src/auth/logged-in.guard';
 import { YoutubeGuard } from 'src/youtube/youtube.guard';
-import { User } from 'src/decorator/user.decorator';
-import { Youtube } from 'src/decorator/youtube.decorator';
+import { User } from 'src/common/decorator/user.decorator';
+import { Youtube } from 'src/common/decorator/youtube.decorator';
 
 @Controller('playlistitems')
 export class PlaylistitemsController {

@@ -1,33 +1,31 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
-import { Public } from 'src/decorator/public.decorator';
+import { Public } from 'src/common/decorator/public.decorator';
 import { YoutubeGuard } from 'src/youtube/youtube.guard';
-import { Youtube } from 'src/decorator/youtube.decorator';
+import { Youtube } from 'src/common/decorator/youtube.decorator';
 
 @Controller('music')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.musicService.findOne(+id);
+  findMusicById(@Param('id') id: number) {
+    return this.musicService.findMusicById(+id);
   }
 
   @Get()
-  findAll() {
-    return this.musicService.findAll();
-  }
-
-  @Get('youtube/:ytVideoId')
-  findByYtVideoId(@Param('ytVideoId') ytVideoId: string) {
-    return this.musicService.findByYtVideoId(ytVideoId);
+  findAllMusic() {
+    return this.musicService.findAllMusic();
   }
 
   @Public()
   @UseGuards(YoutubeGuard)
   @Post()
-  create(@Body() createMusicDto: CreateMusicDto, @Youtube() youtube: Youtube) {
-    return this.musicService.create(youtube.oauth2Client, createMusicDto);
+  createMusic(
+    @Body() createMusicDto: CreateMusicDto,
+    @Youtube() youtube: Youtube,
+  ) {
+    return this.musicService.createMusic(youtube.oauth2Client, createMusicDto);
   }
 }
