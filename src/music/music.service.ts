@@ -6,8 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { YoutubeService } from 'src/youtube/youtube.service';
 import { OAuth2Client } from 'google-auth-library';
 import {
-  EntityAlreadyExistsException,
-  EntityNotFoundException,
+  ResourceAlreadyExistsException,
+  ResourceNotFoundException,
 } from 'src/common/exception/service.exception';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class MusicService {
   async findMusicById(musicId: number) {
     const music = await this.musicRepository.findOne({ where: { musicId } });
     if (!music) {
-      throw new EntityNotFoundException(`Music Not Found`);
+      throw new ResourceNotFoundException(`Music Not Found`);
     }
     return music;
   }
@@ -39,7 +39,7 @@ export class MusicService {
       where: { ytVideoId },
     });
     if (music) {
-      throw new EntityAlreadyExistsException(`Music Already Exists`);
+      throw new ResourceAlreadyExistsException(`Music Already Exists`);
     }
 
     const item = await this.youtubeService.listMusic(oauth2Client, ytVideoId);

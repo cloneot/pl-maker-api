@@ -4,8 +4,8 @@ import { MusicEntity } from './music.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
-  EntityAlreadyExistsException,
-  EntityNotFoundException,
+  ResourceAlreadyExistsException,
+  ResourceNotFoundException,
 } from '../common/exception/service.exception';
 import { TypeOrmTestingModule } from 'src/common/test/typeorm-testing.module';
 import { YoutubeService } from 'src/youtube/youtube.service';
@@ -65,7 +65,7 @@ describe('MusicService', () => {
 
     it('should throw EntityNotFoundException when it does not exist', async () => {
       expect(musicService.findMusicById(-1)).rejects.toThrow(
-        EntityNotFoundException,
+        ResourceNotFoundException,
       );
     });
   });
@@ -111,7 +111,7 @@ describe('MusicService', () => {
     it('should throw EntityAlreadyExistsException when it already exists', async () => {
       const ytListMusicApi = jest.spyOn(youtubeService, 'listMusic');
       expect(musicService.createMusic(client, dto1)).rejects.toThrow(
-        EntityAlreadyExistsException,
+        ResourceAlreadyExistsException,
       );
       expect(ytListMusicApi).toHaveBeenCalledTimes(0);
     });

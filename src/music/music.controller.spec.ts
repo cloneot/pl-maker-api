@@ -3,8 +3,8 @@ import { MusicController } from './music.controller';
 import { MusicService } from './music.service';
 import { MusicEntity } from './music.entity';
 import {
-  EntityAlreadyExistsException,
-  EntityNotFoundException,
+  ResourceAlreadyExistsException,
+  ResourceNotFoundException,
 } from '../common/exception/service.exception';
 import { plainToInstance } from 'class-transformer';
 import { CreateMusicDto } from './dto/create-music.dto';
@@ -24,7 +24,7 @@ const mockMusicService = {
   findMusicById: jest.fn().mockImplementation(async (musicId: number) => {
     if (musicId === music1.musicId) return exposedMusic1;
     if (musicId === music2.musicId) return exposedMusic2;
-    throw new EntityNotFoundException();
+    throw new ResourceNotFoundException();
   }),
   findAllMusic: jest.fn().mockResolvedValue([exposedMusic1, exposedMusic2]),
   createMusic: jest
@@ -35,7 +35,7 @@ const mockMusicService = {
           dto.ytVideoId === music1.ytVideoId ||
           dto.ytVideoId === music2.ytVideoId
         ) {
-          throw new EntityAlreadyExistsException();
+          throw new ResourceAlreadyExistsException();
         }
         return plainToInstance(MusicEntity, {
           musicId: 99,
@@ -89,7 +89,7 @@ describe('MusicController', () => {
     // http 404 error will be thrown by global filter
     it('should throw EntityNotFoundException when it does not exist', () => {
       expect(musicController.findMusicById(3)).rejects.toThrow(
-        EntityNotFoundException,
+        ResourceNotFoundException,
       );
     });
   });
@@ -116,11 +116,11 @@ describe('MusicController', () => {
     it('should throw EntityAlreadyExistsException when it already exists', async () => {
       await expect(
         musicController.createMusic({ ytVideoId: music1.ytVideoId }, yt),
-      ).rejects.toThrow(EntityAlreadyExistsException);
+      ).rejects.toThrow(ResourceAlreadyExistsException);
 
       await expect(
         musicController.createMusic({ ytVideoId: music2.ytVideoId }, yt),
-      ).rejects.toThrow(EntityAlreadyExistsException);
+      ).rejects.toThrow(ResourceAlreadyExistsException);
     });
   });
 });

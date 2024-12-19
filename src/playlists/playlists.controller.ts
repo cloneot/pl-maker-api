@@ -24,12 +24,12 @@ export class PlaylistsController {
 
   @UseGuards(LoggedInGuard, YoutubeGuard)
   @Post()
-  create(
+  createPlaylist(
     @User() user: UserEntity,
     @Youtube() youtube: Youtube,
     @Body() createPlaylistDto: CreatePlaylistDto,
   ) {
-    return this.playlistsService.create(
+    return this.playlistsService.createPlaylist(
       user,
       youtube.oauth2Client,
       createPlaylistDto,
@@ -38,25 +38,25 @@ export class PlaylistsController {
 
   @UseGuards(LoggedInGuard)
   @Get()
-  findAll(@User() user) {
-    return this.playlistsService.findAll(user);
+  findAllPlaylists(@User() user) {
+    return this.playlistsService.findAllPlaylists(user);
   }
 
   @UseGuards(LoggedInGuard)
   @Get(':id')
-  findOne(@Param('id') id: number, @User() user) {
-    return this.playlistsService.findOne(user, id);
+  findPlaylistById(@User() user, @Param('id') id: number) {
+    return this.playlistsService.findPlaylistById(user, id);
   }
 
   @UseGuards(LoggedInGuard, YoutubeGuard)
   @Patch(':id')
-  update(
+  updatePlaylist(
     @User() user: UserEntity,
     @Youtube() youtube: Youtube,
     @Param('id') id: number,
     @Body() updatePlaylistDto: UpdatePlaylistDto,
   ) {
-    return this.playlistsService.update(
+    return this.playlistsService.updatePlaylist(
       user,
       youtube.oauth2Client,
       updatePlaylistDto,
@@ -66,7 +66,11 @@ export class PlaylistsController {
 
   @UseGuards(LoggedInGuard, YoutubeGuard)
   @Delete(':id')
-  remove(@Youtube() youtube: Youtube, @Param('id') id: number) {
-    return this.playlistsService.remove(youtube.oauth2Client, id);
+  removePlaylist(
+    @User() user: UserEntity,
+    @Youtube() youtube: Youtube,
+    @Param('id') id: number,
+  ) {
+    return this.playlistsService.removePlaylist(user, youtube.oauth2Client, id);
   }
 }

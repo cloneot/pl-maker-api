@@ -28,7 +28,7 @@ export class YoutubeService {
     return res.data.items[0];
   }
 
-  async createPlaylist(
+  async insertPlaylist(
     oauth2Client: OAuth2Client,
     createPlaylistDto: CreatePlaylistDto,
   ): Promise<youtube_v3.Schema$Playlist> {

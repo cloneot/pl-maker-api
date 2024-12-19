@@ -1,7 +1,8 @@
 import {
-  ENTITY_ALREADY_EXISTS,
-  ENTITY_NOT_FOUND,
   ErrorCode,
+  RESOURCE_ALREADY_EXISTS,
+  RESOURCE_NOT_FOUND,
+  FORBIDDEN_RESOURCE_ACCESS,
 } from './error-code';
 
 export class ServiceException extends Error {
@@ -13,14 +14,20 @@ export class ServiceException extends Error {
   }
 }
 
-export class EntityNotFoundException extends ServiceException {
+export class ResourceNotFoundException extends ServiceException {
   constructor(message?: string) {
-    super(ENTITY_NOT_FOUND, message);
+    super(RESOURCE_NOT_FOUND, message);
   }
 }
 
-export class EntityAlreadyExistsException extends ServiceException {
+export class ResourceAlreadyExistsException extends ServiceException {
   constructor(message?: string) {
-    super(ENTITY_ALREADY_EXISTS, message);
+    super(RESOURCE_ALREADY_EXISTS, message);
+  }
+}
+
+export class ForbiddenResourceAccessException extends ServiceException {
+  constructor(message?: string) {
+    super(FORBIDDEN_RESOURCE_ACCESS, message);
   }
 }

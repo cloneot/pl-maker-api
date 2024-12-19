@@ -13,8 +13,12 @@ export type ErrorCode = {
   message: string;
 };
 
-export const ENTITY_NOT_FOUND = new ErrorCodeVo(404, 'Entity Not Found');
-export const ENTITY_ALREADY_EXISTS = new ErrorCodeVo(
+export const RESOURCE_NOT_FOUND = new ErrorCodeVo(404, 'Resource Not Found');
+export const RESOURCE_ALREADY_EXISTS = new ErrorCodeVo(
   409,
-  'Entity Already Exists',
+  'Resource Already Exists',
+);
+export const FORBIDDEN_RESOURCE_ACCESS = new ErrorCodeVo(
+  403,
+  'You do not have permission to access this resource',
 );

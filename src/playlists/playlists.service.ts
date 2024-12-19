@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,10 @@ import { Repository } from 'typeorm';
 import { YoutubeService } from 'src/youtube/youtube.service';
 import { UserEntity } from 'src/users/user.entity';
 import { OAuth2Client } from 'google-auth-library';
+import {
+  ForbiddenResourceAccessException,
+  ResourceNotFoundException,
+} from 'src/common/exception/service.exception';
 
 @Injectable()
 export class PlaylistsService {
@@ -16,13 +20,13 @@ export class PlaylistsService {
     private readonly youtubeService: YoutubeService,
   ) {}
 
-  async create(
+  async createPlaylist(
     user: UserEntity,
     oauth2Client: OAuth2Client,
     createPlaylistDto: CreatePlaylistDto,
   ) {
     const ytPlaylistId = (
-      await this.youtubeService.createPlaylist(oauth2Client, createPlaylistDto)
+      await this.youtubeService.insertPlaylist(oauth2Client, createPlaylistDto)
     ).id;
     const playlist = await this.playlistRepository.save({
       user,
@@ -32,58 +36,71 @@ export class PlaylistsService {
     return playlist;
   }
 
-  async findAll(user: UserEntity) {
+  async findAllPlaylists(user: UserEntity) {
     const playlists = this.playlistRepository.find({
       relations: { user: true },
       where: { user },
     });
-    // console.log('playlist.service: findAll: ', playlists);
     return playlists;
   }
 
-  // TODO:
-  // parameter: only id
-  // possesion check have to be separated
-  findOne(user: UserEntity, id: number) {
-    const playlist = this.playlistRepository.findOneOrFail({
+  async findPlaylistById(user: UserEntity, playlistId: number) {
+    const playlist = await this.playlistRepository.findOne({
       relations: { user: true },
-      where: { playlistId: id, user: user },
+      where: { playlistId },
     });
-    // console.log('playlist.service: findOne: ', playlist);
+    if (!playlist) {
+      throw new ResourceNotFoundException('Playlist Not Found');
+    }
+
+    // TODO: pass if playlist is public
+    if (playlist.user.userId !== user.userId) {
+      throw new ForbiddenResourceAccessException(
+        'You do not have permission to access this playlist',
+      );
+    }
     return playlist;
   }
 
-  async update(
+  async updatePlaylist(
     user: UserEntity,
     oauth2Client: OAuth2Client,
     updatePlaylistDto: UpdatePlaylistDto,
-    id: number,
+    playlistId: number,
   ) {
-    const playlist = await this.findOne(user, id);
+    const playlist = await this.findPlaylistById(user, playlistId);
     const ytPlaylistId = playlist.ytPlaylistId;
+    if (playlist.user.userId !== user.userId) {
+      throw new ForbiddenResourceAccessException(
+        'You do not have permission to access this playlist',
+      );
+    }
 
     this.youtubeService.updatePlaylist(
       oauth2Client,
       updatePlaylistDto,
       ytPlaylistId,
     );
-
-    const updatedPlaylist = await this.playlistRepository.update(id, {
+    const updatedPlaylist = await this.playlistRepository.update(playlistId, {
       ...updatePlaylistDto,
     });
     return updatedPlaylist;
   }
 
-  async remove(oauth2Client: OAuth2Client, id: number) {
-    // remove from youtube
-    const { ytPlaylistId } = await this.playlistRepository.findOneOrFail({
-      where: {
-        playlistId: id,
-      },
-    });
-    this.youtubeService.deletePlaylist(oauth2Client, ytPlaylistId);
+  async removePlaylist(
+    user: UserEntity,
+    oauth2Client: OAuth2Client,
+    playlistId: number,
+  ) {
+    const playlist = await this.findPlaylistById(user, playlistId);
+    const ytPlaylistId = playlist.ytPlaylistId;
+    if (playlist.user.userId !== user.userId) {
+      throw new ForbiddenResourceAccessException(
+        'You do not have permission to access this playlist',
+      );
+    }
 
-    // remove from db
-    await this.playlistRepository.delete(id);
+    this.youtubeService.deletePlaylist(oauth2Client, ytPlaylistId);
+    await this.playlistRepository.delete(playlistId);
   }
 }
