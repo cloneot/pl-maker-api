@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { PlaylistEntity } from '@resources/playlists/playlist.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { TagEntity } from '../tags/tag.entity';
 
 @Entity()
 export class UserEntity {
@@ -27,4 +28,8 @@ export class UserEntity {
   @Exclude()
   @OneToMany(() => PlaylistEntity, (playlistEntity) => playlistEntity.user)
   playlists: PlaylistEntity[];
+
+  @Exclude()
+  @OneToMany(() => TagEntity, (tag) => tag.user)
+  tags: TagEntity[];
 }

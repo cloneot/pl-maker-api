@@ -10,6 +10,7 @@ import { PlaylistitemsModule } from '@resources/playlistitems/playlistitems.modu
 import { PlaylistsModule } from '@resources/playlists/playlists.module';
 import { UsersModule } from '@resources/users/users.module';
 import { YoutubeModule } from '@common/youtube/youtube.module';
+import { TagsModule } from './resources/tags/tags.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { YoutubeModule } from '@common/youtube/youtube.module';
     YoutubeModule,
     PlaylistsModule,
     PlaylistitemsModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

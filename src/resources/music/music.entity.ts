@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { PlaylistitemEntity } from '@resources/playlistitems/playlistitem.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { TagEntity } from '../tags/tag.entity';
 
 @Entity()
 export class MusicEntity {
@@ -24,4 +25,8 @@ export class MusicEntity {
   @Exclude()
   @OneToMany(() => PlaylistitemEntity, (playlistitem) => playlistitem.music)
   playlistitems: PlaylistitemEntity[];
+
+  @Exclude()
+  @OneToMany(() => TagEntity, (tag) => tag.music)
+  tags: TagEntity[];
 }
