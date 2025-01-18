@@ -44,7 +44,7 @@ pl-maker의 API의 명세를 작성한 문서입니다. 조건, 참고사항, �
 검색 기능 스펙이 확정되지 않아 변경될 가능성이 큽니다. 
 
 - tagId: 태그의 고유 번호입니다. 생성된 순서대로 번호를 부여받는 4바이트 정수입니다. 
-  - (key, value) 형태로 구성됩니다. 
+  - (key, value) 형태로 구성됩니다. (userId, musicId)마다 key는 unique합니다. 
 - tagName: 태그의 이름입니다. 
 - valueType: 태그의 값의 타입입니다. 'number' 혹은 'string'입니다. 유효한 타입이 추가될 수 있습니다. 
 - intValue: 태그의 값입니다. valueType이 'number'가 아닐 경우 null입니다. 4바이트 정수입니다.
