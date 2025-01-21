@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: app
     env_file:
       - .env
       - .env.prod
@@ -10,22 +11,23 @@ services:
       - '443:443'
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
-    environment:
-      NODE_ENV: production
     depends_on:
       - db
     networks:
       - pl-maker-network
 
   db:
+    container_name: db
+    env_file:
+      - .env.prod
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
     image: mysql:8
     expose:
       - '3306'
     # ports:
     #   - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pl_maker
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
