@@ -64,8 +64,8 @@ async function bootstrap() {
       name: 'connect.sid',
       cookie: {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none',
+        secure: process.env.NODE_ENV === 'production' ? true : false,
+        sameSite: 'lax',
         maxAge: 1000 * 60 * 30,
       },
       store: new FileStore({
