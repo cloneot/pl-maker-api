@@ -22,7 +22,7 @@ export class TagsService {
 
   async createTag(user: UserEntity, createTagDto: CreateTagDto) {
     const music = await this.musicService.findMusicById(createTagDto.musicId);
-    const exists = await this.tagRepository.find({
+    const exists = await this.tagRepository.findOne({
       relations: { user: true, music: true },
       where: { user, music, tagName: createTagDto.tagName },
     });
@@ -76,6 +76,7 @@ export class TagsService {
         'You do not have permission to update this tag',
       );
     }
+    // TODO: verify dto's musicId == tagId's.
     const value = {
       valueType: updateTagDto.valueType,
       intValue:
