@@ -65,7 +65,7 @@ async function bootstrap() {
       cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production'? 'none' : 'lax',
         maxAge: 1000 * 60 * 30,
       },
       store: new FileStore({
