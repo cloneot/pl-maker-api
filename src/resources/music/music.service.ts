@@ -46,7 +46,7 @@ export class MusicService {
     return this.musicRepository.save({
       ytVideoId,
       title: item.snippet.title,
-      thumbnailPath: item.snippet.thumbnails.default.url,
+      thumbnailPath: item.snippet.thumbnails.high.url,
     });
   }
 }

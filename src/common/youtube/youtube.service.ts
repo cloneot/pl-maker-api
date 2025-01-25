@@ -86,7 +86,7 @@ export class YoutubeService {
       auth: oauth2Client,
       part: ['id', 'snippet'],
       id: [ytVideoId],
-      fields: 'items(id, snippet(title, thumbnails(default(url))))',
+      fields: 'items(id, snippet(title, thumbnails(high(url))))',
     });
     return res.data.items[0];
   }
