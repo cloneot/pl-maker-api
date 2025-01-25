@@ -4,6 +4,7 @@ import { youtube, youtube_v3 } from '@googleapis/youtube';
 import { CreatePlaylistDto } from '@resources/playlists/dto/create-playlist.dto';
 import { UpdatePlaylistDto } from '@resources/playlists/dto/update-playlist.dto';
 import { YtInsertPlaylistitemDto } from '@resources/playlistitems/dto/yt-insert-playlistitem.dto';
+import { ResourceNotFoundException } from '../exception/service.exception';
 
 @Injectable()
 export class YoutubeService {
@@ -88,6 +89,9 @@ export class YoutubeService {
       id: [ytVideoId],
       fields: 'items(id, snippet(title, thumbnails(high(url))))',
     });
+    if (res.data.items.length === 0) {
+      throw new ResourceNotFoundException('YtMusic Not Found');
+    }
     return res.data.items[0];
   }
 
