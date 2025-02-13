@@ -1,73 +1,50 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+사용자가 직접 노래(유튜브 뮤직)에 태그를 붙이고, 태그를 기준으로 원하는 곡만 필터링하여 유튜브 재생목록을 만들 수 있습니다. 
 
-## Installation
+gmail, solved.ac처럼 복잡한 쿼리를 처리하는 것을 목표로 합니다. 
 
-```bash
-$ npm install
-```
+- [ ] filter
+  - [ ] boolean tag 조건 (e.g., `band`, `favorite`, ...)
+  - [ ] key:value exact same 조건 (e.g., `genre:rock`)
+  - [ ] 논리 AND, OR, NOT 연산 (e.g., `genre:rock || (genre:pop && favorite)`)
+  - [ ] numeric range 조건 (e.g., `bpm:100..120`)
+- [ ] query
+  - [ ] full text search (e.g., `lyrics:높은 마음으로 살아야지 낮은 몸에 갇혀있대도`)
 
-## Running the app
 
-```bash
-# development
-$ npm run start
+## Architecture
+Nest.js(typescript), MySQL, TypeORM, Docker를 사용합니다. 
 
-# watch mode
-$ npm run start:dev
+DB쪽 스택은 변경될 가능성이 높습니다. 
 
-# production mode
-$ npm run start:prod
-```
+![playlist maker architecture](./playlist-maker-architecture.png)
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+## API Specs
+프론트엔드 단에서 필요한 내용을 [API.md](./API.md)에 정리해두었습니다. 
 
-# e2e tests
-$ npm run test:e2e
+프로토타입이 어느 정도 완성되면, OpenAPI v3 기반의 [swagger](https://github.com/swagger-api/swagger-ui), [redoc](https://github.com/Redocly/redoc), [elements](https://github.com/stoplightio/elements) 중 하나를 도입할 계획입니다. 
 
-# test coverage
-$ npm run test:cov
-```
 
-## Support
+## DB diagrams
+dbdiagram.io로 만든 나이브한 다이어그램입니다. ([링크](https://dbdiagram.io/d/playlist-maker-67aa14bc263d6cf9a0a51ad6))
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+주의: 1 to 1 관계, composite PK 등을 표현할 수 없어 다이어그램이 정확하지 않습니다. 
 
-## Stay in touch
+custom_tags에 대한 검색을 효율적으로 수행하기 위해 NoSQL 도입을 생각 중입니다. (MongoDB 또는 Elasticsearch)
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+![naive ERD](./playlist-maker-ERD.png)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
+구현된 스키마는 다음과 같습니다:
+- [x] users
+- [x] musics (music)
+- [x] playlists
+- [x] playlistitems
+- [x] custom_tags (tags)
+- [ ] official_tags
+- [ ] music_translations
+- [ ] user_settings
+- [ ] artists
+- [ ] albums
+- [ ] album_translations
